@@ -4,6 +4,8 @@ import Framework from './framework'
 import Noise from './noise'
 import {other} from './noise'
 
+var noisyShape;
+
 // called after the scene loads
 function onLoad(framework) {
   var scene = framework.scene;
@@ -32,14 +34,14 @@ function onLoad(framework) {
 
   var noiseMaterial = new THREE.ShaderMaterial({
     uniforms: {
-      noise: { value: 0.0 }
+      time: { value: 0.0 }
     },
     vertexShader: require('./shaders/noise-vert.glsl'),
     fragmentShader: require('./shaders/noise-frag.glsl')
   });
 
-  var shape = new THREE.IcosahedronGeometry(1, 0);
-  var noisyShape = new THREE.Mesh(shape, noiseMaterial);
+  var shape = new THREE.IcosahedronGeometry(3, 5);
+  noisyShape = new THREE.Mesh(shape, noiseMaterial);
 
   // set camera position
   camera.position.set(1, 1, 2);
@@ -58,6 +60,9 @@ function onLoad(framework) {
 // called on frame updates
 function onUpdate(framework) {
   // console.log(`the time is ${new Date()}`);
+  if (noisyShape) {
+    noisyShape.material.uniforms.time.value += 0.033;
+  }
 }
 
 // when the scene is done initializing, it will call onLoad, then on frame updates, call onUpdate
