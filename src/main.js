@@ -30,11 +30,23 @@ function onLoad(framework) {
   });
   var adamCube = new THREE.Mesh(box, adamMaterial);
 
+  var noiseMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      noise: { value: 0.0 }
+    },
+    vertexShader: require('./shaders/noise-vert.glsl'),
+    fragmentShader: require('./shaders/noise-frag.glsl')
+  });
+
+  var shape = new THREE.IcosahedronGeometry(1, 0);
+  var noisyShape = new THREE.Mesh(shape, noiseMaterial);
+
   // set camera position
   camera.position.set(1, 1, 2);
   camera.lookAt(new THREE.Vector3(0,0,0));
 
-  scene.add(adamCube);
+  // scene.add(adamCube);
+  scene.add(noisyShape);
 
   // edit params and listen to changes like this
   // more information here: https://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage
@@ -51,7 +63,7 @@ function onUpdate(framework) {
 // when the scene is done initializing, it will call onLoad, then on frame updates, call onUpdate
 Framework.init(onLoad, onUpdate);
 
-// console.log('hello world');
+console.log('hello world');
 
 // console.log(Noise.generateNoise());
 
